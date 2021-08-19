@@ -283,7 +283,7 @@ using Test, Suppressor
         restrict(imgcolax, Axis{:y})  # FIXME #628
         restrict(imgcolax, Axis{:x})
         imgmeta = ImageMeta(imgcol, myprop=1)
-        @test isa(restrict(imgmeta, [1, 2]), ImageMeta)
+        @test isa(restrict(imgmeta, (1, 2)), ImageMeta)
         # Issue #395
         img1 = colorview(RGB, fill(0.9, 3, 5, 5))
         img2 = colorview(RGB, fill(N0f8(0.9), 3, 5, 5))

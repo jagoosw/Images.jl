@@ -1081,3 +1081,15 @@ end
 @deprecate forwarddiffy(X) fdiff(X, dims=1, boundary=:zero)
 @deprecate backdiffx(X) fdiff(X, dims=2, rev=true, boundary=:zero)
 @deprecate backdiffy(X) fdiff(X, dims=1, rev=true, boundary=:zero)
+
+# This is now replaced by ImageTransformations and Interpolations
+function bilinear_interpolation(img::AbstractArray{T,N}, xs::Vararg{<:Number, N}) where {T,N}
+    Base.depwarn("`bilinear_interpolation` is deprecated, please use `warp`, `imresize` from ImageTransformations or `extrapolate`, `interpolate` from Interpolations", :bilinear_interpolation)
+    pad_ax = map(axes(img), xs) do ax, x
+        min(floor(Int, x), first(ax)):max(ceil(Int, x), last(ax))
+    end
+    padded_img = PaddedView(zero(T), img, pad_ax)
+    itp = interpolate(padded_img, BSpline(Linear()))
+    return itp(xs...)
+end
+export bilinear_interpolation

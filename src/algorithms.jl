@@ -115,7 +115,7 @@ macro test_approx_eq_sigma_eps(A, B, sigma, eps)
         kern = KernelFactors.IIRGaussian($(esc(sigma)))
         Af = imfilter($(esc(A)), kern, NA())
         Bf = imfilter($(esc(B)), kern, NA())
-        diffscale = max(maxabsfinite($(esc(A))), maxabsfinite($(esc(B))))
+        diffscale = max(_abs(maxabsfinite($(esc(A)))), _abs(maxabsfinite($(esc(B)))))
         d = sad(Af, Bf)
         if d > length(Af)*diffscale*($(esc(eps)))
             error("Arrays A and B differ")
@@ -151,7 +151,7 @@ function test_approx_eq_sigma_eps(A::AbstractArray, B::AbstractArray,
     kern = KernelFactors.IIRGaussian(sigma)
     Af = imfilter(A, kern, NA())
     Bf = imfilter(B, kern, NA())
-    diffscale = max(maxabsfinite(A), maxabsfinite(B))
+    diffscale = max(_abs(maxabsfinite(A)), _abs(maxabsfinite(B)))
     d = sad(Af, Bf)
     diffpct = d / (length(Af) * diffscale)
     if diffpct > eps
@@ -159,6 +159,11 @@ function test_approx_eq_sigma_eps(A::AbstractArray, B::AbstractArray,
     end
     diffpct
 end
+
+# This should be removed when upstream ImageBase is updated
+# In ImageBase v0.1.3: `maxabsfinite` returns a RGB instead of a Number
+_abs(c::CT) where CT<:Color = mapreducec(abs, +, zero(eltype(CT)), c)
+_abs(c::Number) = abs(c)
 
 """
 BlobLoG stores information about the location of peaks as discovered by `blob_LoG`.

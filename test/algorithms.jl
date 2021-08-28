@@ -82,8 +82,8 @@ using Test, Suppressor
         @test_throws ErrorException (@test_approx_eq_sigma_eps a rand(13,15) [1,1] 0.01)
         @test_throws ErrorException (@test_approx_eq_sigma_eps a rand(15,15) [1,1] 0.01)
         @test (@test_approx_eq_sigma_eps a a [1,1] 0.01) == nothing
-        @test (@test_approx_eq_sigma_eps a a+0.01*rand(Float64,size(a)) [1,1] 0.01) == nothing
-        @test_throws ErrorException (@test_approx_eq_sigma_eps a a+0.5*rand(Float64,size(a)) [1,1] 0.01)
+        @test (@test_approx_eq_sigma_eps a a+0.01*rand(eltype(a),size(a)) [1,1] 0.01) == nothing
+        @test_throws ErrorException (@test_approx_eq_sigma_eps a a+0.5*rand(eltype(a),size(a)) [1,1] 0.01)
         a = colorview(RGB, rand(3,15,15))
         @test (@test_approx_eq_sigma_eps a a [1,1] 0.01) == nothing
         @test_throws ErrorException (@test_approx_eq_sigma_eps a colorview(RGB, rand(3,15,15)) [1,1] 0.01)
@@ -92,8 +92,8 @@ using Test, Suppressor
         @test_throws ErrorException Images.test_approx_eq_sigma_eps(a, rand(13,15), [1,1], 0.01)
         @test_throws ErrorException Images.test_approx_eq_sigma_eps(a, rand(15,15), [1,1], 0.01)
         @test Images.test_approx_eq_sigma_eps(a, a, [1,1], 0.01) == 0.0
-        @test Images.test_approx_eq_sigma_eps(a, a+0.01*rand(Float64,size(a)), [1,1], 0.01) > 0.0
-        @test_throws ErrorException Images.test_approx_eq_sigma_eps(a, a+0.5*rand(Float64,size(a)), [1,1], 0.01)
+        @test Images.test_approx_eq_sigma_eps(a, a+0.01*rand(eltype(a),size(a)), [1,1], 0.01) > 0.0
+        @test_throws ErrorException Images.test_approx_eq_sigma_eps(a, a+0.5*rand(eltype(a),size(a)), [1,1], 0.01)
         a = colorview(RGB, rand(3,15,15))
         @test Images.test_approx_eq_sigma_eps(a, a, [1,1], 0.01) == 0.0
         @test_throws ErrorException Images.test_approx_eq_sigma_eps(a, colorview(RGB, rand(3,15,15)), [1,1], 0.01)

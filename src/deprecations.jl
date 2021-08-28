@@ -1076,3 +1076,8 @@ function ColorVectorSpace.complement(x::AbstractArray)
     complement.(x)
 end
 
+# ImageBase.fdiff is more performent and generic
+@deprecate forwarddiffx(X) fdiff(X, dims=2, boundary=:zero)
+@deprecate forwarddiffy(X) fdiff(X, dims=1, boundary=:zero)
+@deprecate backdiffx(X) fdiff(X, dims=2, rev=true, boundary=:zero)
+@deprecate backdiffy(X) fdiff(X, dims=1, rev=true, boundary=:zero)

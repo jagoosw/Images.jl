@@ -1,4 +1,5 @@
 using Test
+using ImageBase
 using Suppressor
 
 @testset "Images" begin

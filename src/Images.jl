@@ -29,6 +29,7 @@ using Reexport
 if isdefined(ImageCore, :permuteddimsview)
     export permuteddimsview
 end
+@reexport using ImageBase
 
 using FileIO
 export load, save
@@ -98,9 +99,7 @@ end
 # in deprecations.jl
 import ImageContrastAdjustment: build_histogram, adjust_histogram, adjust_histogram!
 
-using ImageMetadata: ImageMetaAxis
 import ImageMorphology: dilate, erode
-import ImageTransformations: restrict
 using TiledIteration: EdgeIterator
 
 include("compat.jl")
@@ -133,7 +132,6 @@ export
     nimages,
     pixelspacing,
     properties,
-    restrict,
     sdims,
     size_spatial,
     shareproperties,
@@ -145,10 +143,6 @@ export
     widthheight,
 
     # algorithms
-    backdiffx,
-    backdiffy,
-    forwarddiffx,
-    forwarddiffy,
     imcorner,
     imcorner_subpixel,
     corner2subpixel,

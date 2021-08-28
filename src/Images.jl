@@ -22,17 +22,11 @@ using Base64: Base64EncodePipe
 # CHECKME: use this or follow deprecation and substitute?
 using SparseArrays: findnz
 
-# "deprecated imports" are below
-
 using Reexport
 @reexport using ImageCore
-if isdefined(ImageCore, :permuteddimsview)
-    export permuteddimsview
-end
 @reexport using ImageBase
 
-using FileIO
-export load, save
+@reexport using FileIO: load, save
 import .Colors: Fractional
 import Graphics
 import Graphics: width, height, Point
@@ -54,25 +48,6 @@ using ImageTransformations.Interpolations
 @reexport using ImageDistances
 @reexport using ImageContrastAdjustment
 @reexport using ImageQualityIndexes
-
-if isdefined(ImageQualityIndexes, :assess_psnr)
-    # deprecated since ImageQualityIndexes v0.1.4
-    Base.@deprecate_binding psnr assess_psnr
-    Base.@deprecate_binding ssim assess_ssim
-else
-    const psnr = ImageQualityIndexes.psnr
-    export psnr
-end
-
-# Both ImageMetadata v0.9.0 and ImageAxes v0.6.0 deprecate the symbol data and
-# this causes a name conflict
-if isdefined(ImageMetadata, :arraydata)
-    Base.@deprecate_binding data arraydata
-end
-# ImageMetadata < v0.9.0 compatibility
-if !hasmethod(arraydata, (ImageMeta, ) )
-    ImageAxes.arraydata(img::ImageMeta) = ImageMetadata.data(img)
-end
 
 # Non-exported symbol bindings to ImageShow
 import ImageShow
@@ -121,27 +96,9 @@ export
     @test_approx_eq_sigma_eps,
 
     # core functions
-    assert_timedim_last,
-    colordim,
-    coords_spatial,
-    copyproperties,
-    data,
-    height,
     maxabsfinite,
     maxfinite,
     minfinite,
-    nimages,
-    pixelspacing,
-    properties,
-    sdims,
-    size_spatial,
-    shareproperties,
-    spacedirections,
-    spatialorder,
-    spatialproperties,
-    timedim,
-    width,
-    widthheight,
 
     # algorithms
     imcorner,
@@ -178,7 +135,6 @@ export
     meanfinite,
     entropy,
     orientation,
-    padarray,
     phase,
     thin_edges,
     thin_edges_subpix,

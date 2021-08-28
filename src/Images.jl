@@ -49,26 +49,8 @@ using ImageTransformations.Interpolations
 @reexport using ImageContrastAdjustment
 @reexport using ImageQualityIndexes
 
-# Non-exported symbol bindings to ImageShow
-import ImageShow
-if isdefined(ImageShow, :play)
-    @doc (@doc ImageShow.play)
-    const play = ImageShow.play
-else
-    play(args...; kwargs...) = error("The `Images.play` function requires ImageShow at least 0.3.0.")
-end
-if isdefined(ImageShow, :explore)
-    @doc (@doc ImageShow.explore)
-    const explore = ImageShow.explore
-else
-    explore(args...; kwargs...) = error("The `Images.explore` function requires ImageShow at least 0.3.0.")
-end
-if isdefined(ImageShow, :gif)
-    @doc (@doc ImageShow.gif)
-    const gif = ImageShow.gif
-else
-    gif(args...; kwargs...) = error("The `Images.gif` function requires ImageShow at least 0.3.0.")
-end
+# Non-exported symbol bindings to ImageShow so that we can use, e.g., `Images.gif`
+import ImageShow: play, explore, gif
 
 # While we are bridging the old API and the new API in ImageContrastAdjustment
 # we need to import these functions because we make new definitions for them

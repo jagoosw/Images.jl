@@ -6,6 +6,7 @@ using StaticArrays
 
 using Reexport
 @reexport using ImageCore
+using ImageCore: NumberLike
 @reexport using ImageBase
 
 @reexport using FileIO: load, save

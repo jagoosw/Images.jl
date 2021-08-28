@@ -1,43 +1,19 @@
 module Images
 
-import Base.Iterators.take
-import Base: +, -, *
-import Base: abs, atan, clamp, convert, copy, copy!, delete!,
-             eltype, get, getindex, haskey, hypot,
-             imag, length, map, map!, maximum,
-             minimum, ndims, one, parent, permutedims, real, reinterpret,
-             reshape, resize!,
-             setindex!, show, similar, size, sqrt,
-             strides, sum, write, zero
-
-export float32, float64
 export HomogeneousPoint
 
-using Base: depwarn
-using Base.Order: Ordering, ForwardOrdering, ReverseOrdering
-
 using StaticArrays
-using Base64: Base64EncodePipe
-
-# CHECKME: use this or follow deprecation and substitute?
-using SparseArrays: findnz
 
 using Reexport
 @reexport using ImageCore
 @reexport using ImageBase
 
 @reexport using FileIO: load, save
-import .Colors: Fractional
-import Graphics
-import Graphics: width, height, Point
+import Graphics # TODO: eliminate this direct dependency
 using StatsBase  # TODO: eliminate this dependency
 using IndirectArrays, ImageCore.MappedArrays
 
-# TODO: can we get rid of these definitions?
-const NumberLike = Union{Number,AbstractGray}
-const RealLike = Union{Real,AbstractGray}
-
-const is_little_endian = ENDIAN_BOM == 0x04030201
+const is_little_endian = ENDIAN_BOM == 0x04030201 # CHECKME: is this still used?
 
 @reexport using ImageTransformations
 using ImageTransformations.Interpolations
@@ -59,6 +35,13 @@ import ImageContrastAdjustment: build_histogram, adjust_histogram, adjust_histog
 
 import ImageMorphology: dilate, erode
 using TiledIteration: EdgeIterator
+
+# TODO(v1.0.0): remove these entry points
+# Entry points that isn't used by JuliaImages at all
+# They used to be accessible by, e.g., `Images.metadata`
+import .Colors: Fractional
+import FileIO: metadata
+import Graphics: Point
 
 include("compat.jl")
 include("misc.jl")
@@ -129,9 +112,6 @@ export
 
     # phantoms
     shepp_logan
-
-_length(A::AbstractArray) = length(eachindex(A))
-_length(A) = length(A)
 
 """
 Constructors, conversions, and traits:

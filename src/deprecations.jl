@@ -1112,3 +1112,10 @@ end
 @deprecate blob_LoG(img::AbstractArray{T,N}, σscales::Union{AbstractVector,Tuple},
                     edges::Union{Bool,Tuple{Vararg{Bool}}}, σshape=ntuple(d->1, Val(N))) where {T,N} blob_LoG(img, σscales; edges=edges, σshape=(σshape...,), rthresh=0)
 @deprecate blob_LoG(img::AbstractArray{T,N}, σscales::Union{AbstractVector,Tuple}, σshape::Union{AbstractVector,NTuple{N,Real}}) where {T,N}  blob_LoG(img, σscales; edges=(true, ntuple(d->false,Val(N))...), σshape=(σshape...,), rthresh=0)
+
+function imaverage(filter_size=(3,3))
+    Base.depwarn("imaverage(m, n) is deprecated, use `Kernel.box` or an `IntegralImage`.", :imaverage)
+    Kernel.box(filter_size)
+end
+
+@deprecate imlaplacian(alpha::Number) Kernel.laplacian2d(alpha)

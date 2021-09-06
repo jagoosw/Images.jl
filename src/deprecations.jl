@@ -1119,3 +1119,22 @@ function imaverage(filter_size=(3,3))
 end
 
 @deprecate imlaplacian(alpha::Number) Kernel.laplacian2d(alpha)
+
+import Statistics: std, var
+@deprecate var(A::AbstractArray{C}; kwargs...) where C<:ColorVectorSpace.MathTypes varmult(⊙, A; kwargs...)
+@deprecate std(A::AbstractArray{C}; kwargs...) where C<:ColorVectorSpace.MathTypes stdmult(⊙, A; kwargs...)
+# Doing stats on non-MathTypes is a bad idea
+function var(A::AbstractArray{C}; dims=nothing, kwargs...) where C<:Colorant
+    dims === nothing || error("dims was never supported, but is now for MathTypes")
+    newdims = 2:ndims(A)+1
+    Cbase = base_colorant_type(C)
+    Base.depwarn("`var(A::AbstractArray{<:Colorant})` is deprecated (and not recommended, use a MathTypes colorspace instead), please use `colorview($Cbase, var(channelview(A); dims=$newdims))[]` instead.", :var)
+    return colorview(Cbase, var(channelview(A); dims=newdims, kwargs...))[]
+end
+function std(A::AbstractArray{C}; dims=nothing, kwargs...) where C<:Colorant
+    dims === nothing || error("dims was never supported, but is now for MathTypes")
+    newdims = 2:ndims(A)+1
+    Cbase = base_colorant_type(C)
+    Base.depwarn("`std(A::AbstractArray{<:Colorant})` is deprecated (and not recommended, use a MathTypes colorspace instead), please use `colorview($Cbase, std(channelview(A); dims=$newdims))[]` instead.", :var)
+    return colorview(Cbase, std(channelview(A); dims=newdims, kwargs...))[]
+end

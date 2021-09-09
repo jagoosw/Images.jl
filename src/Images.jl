@@ -36,7 +36,6 @@ import ImageShow: play, explore, gif
 # in deprecations.jl
 import ImageContrastAdjustment: build_histogram, adjust_histogram, adjust_histogram!
 
-import ImageMorphology: dilate, erode
 using TiledIteration: EdgeIterator
 
 # TODO(v1.0.0): remove these entry points

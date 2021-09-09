@@ -1,7 +1,6 @@
 using Base: axes1, tail
 using OffsetArrays
 import Statistics
-using ImageMorphology: dilate!, erode!
 
 # Entropy for grayscale (intensity) images
 function _log(kind::Symbol)
@@ -211,10 +210,6 @@ function imROF(img::AbstractMatrix{<:Color}, λ::Number, iterations::Integer)
     end
     out
 end
-
-# morphological operations for ImageMeta
-dilate(img::ImageMeta, region=coords_spatial(img)) = shareproperties(img, dilate!(copy(arraydata(img)), region))
-erode(img::ImageMeta, region=coords_spatial(img)) = shareproperties(img, erode!(copy(arraydata(img)), region))
 
 """
 ```

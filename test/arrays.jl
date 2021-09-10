@@ -6,10 +6,10 @@ using Images.MappedArrays: mappedarray
     labels = IndirectArray([1 2; 2 1], [RGB(1,0,0), RGB(0,0,1)])
     colorized_A = @suppress_err ColorizedArray(intensity, labels)
     mapped_A = mappedarray(*, intensity, labels)
-    
+
     target = intensity .* labels
 
-    for A in (colorized_A, mapped_A) 
+    for A in (colorized_A, mapped_A)
         @test eltype(A) == RGB{Float64}
         @test size(A) == (2,2)
         @test axes(A) == (Base.OneTo(2), Base.OneTo(2))
